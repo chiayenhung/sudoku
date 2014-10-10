@@ -10,4 +10,6 @@ define ["models/base", "models/grid"], (Base, Grid) ->
       for row in [0..rowNum - 1]
         @attrs.grids.push []
         for column in [0..rowNum - 1]
-          @attrs.grids[row][column] = new Grid
+          grid = new Grid
+          grid.save()
+          @attrs.grids[row][column] = grid.getId()

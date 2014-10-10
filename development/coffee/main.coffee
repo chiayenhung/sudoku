@@ -9,5 +9,6 @@ requirejs.config
     'jquery': exports: '$'
     'jade': exports: 'jade'
 
-requirejs ["jquery" ,"views/board"], ($, Board) ->
+requirejs ["jquery" ,"views/boardView"], ($, Board) ->
   board = new Board $(".board")
+  board.setHandlers()

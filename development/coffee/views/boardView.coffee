@@ -1,6 +1,6 @@
 define ["jquery", "templates", "views/base", "models/game"], ($, JST, Base, Game) ->
 
-  class Board extends Base
+  class BoardView extends Base
 
     game = null
 
@@ -8,6 +8,7 @@ define ["jquery", "templates", "views/base", "models/game"], ($, JST, Base, Game
       super el
       game = new Game rowNum
       @generateGrid rowNum
+      game.save()
 
     generateGrid: (rowNum) ->
       for i in [0..rowNum / 3 - 1]
@@ -22,3 +23,6 @@ define ["jquery", "templates", "views/base", "models/game"], ($, JST, Base, Game
             for y in [0..rowNum / 3 - 1]
               grid = $(JST['grid']())
               newRow.append grid
+
+    setHandlers: ->
+

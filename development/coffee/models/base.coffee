@@ -23,15 +23,21 @@ define [], ->
       @attrs.id      
 
     save: ->
+      data = null
       if @constructor.name not of localStorage
-        localStorage[@constructor.name] = {}
-      localStorage[@constructor.name][@getId()] = JSON.stringify @attrs
+        data = {}
+      else
+        data = JSON.parse localStorage.getItem(@constructor.name)
+      data[@getId()] = @attrs
+      localStorage.setItem @constructor.name, JSON.stringify data
 
     remove: ->
       if @constructor.name not of localStorage
         console.error @constructor.name, "is not created"
         return
-      if @getId() not of localStorage[@constructor.name]
+      data = JSON.parse(localStorage.getItem @constructor.name)
+      if @getId() not of data
         console.error "id", @getId(), @constructor.name, "not in memory"
-      localStorage[@constructor.name].removeItem @getId()
+      delete data[@getId()]
+      localStorage.setItem @constructor.name, JSON.stringify(data)
 
