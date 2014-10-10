@@ -1,7 +1,9 @@
-define ["base"], (Base) ->
+define ["models/base"], (Base) ->
 
   class Grid extends Base
-    name = "grid 1"
 
-    constructor: ->
-      @number = 1
+    immutable = true
+
+    constructor: (immutable) ->
+      super
+      immutable = immutable
