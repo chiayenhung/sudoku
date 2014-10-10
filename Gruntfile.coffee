@@ -73,11 +73,13 @@ module.exports = (grunt) ->
         tasks: ['jade:development', 'clientTemplates']
 
   grunt.registerTask 'clientTemplates', 'Compile and concatenate Jade templates for client.', ->
-    templates = {}
-      # 'text': "#{DEV_PATH}/templates/text.jade"
-      # "InfoWindow": "#{DEV_PATH}/templates/info_window.jade"
+    templates = 
+      'grid': "#{DEV_PATH}/templates/grid.jade"
+      "row": "#{DEV_PATH}/templates/row.jade"
+      "column": "#{DEV_PATH}/templates/column.jade"
 
-    tmplFileContents = "var JST = (function() {\n"
+    # tmplFileContents = "var JST = (function() {\n"
+    tmplFileContents = "define(['jade'], function(jade) {\n"
     tmplFileContents += 'var JST = {};\n'
 
     for namespace, filename of templates
@@ -88,7 +90,7 @@ module.exports = (grunt) ->
       tmplFileContents += "JST['#{namespace}'] = #{contents};\n"
       
     tmplFileContents += 'return JST;\n'
-    tmplFileContents += '})();\n'
+    tmplFileContents += '});\n'
     fs.writeFileSync "#{PRODUCTION_PATH}/js/templates.js", tmplFileContents
 
   grunt.registerTask 'development', [
@@ -97,7 +99,7 @@ module.exports = (grunt) ->
     'coffee:development'
     'sass:development'
     'jade:development'
-    # 'clientTemplates'
+    'clientTemplates'
   ]
 
   grunt.registerTask 'default', [

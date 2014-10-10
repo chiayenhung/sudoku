@@ -12,9 +12,12 @@ define [], ->
         @models[className] = 2
       id
 
-    constructor: () ->
+    constructor: ->
       @attrs = 
         id: Base.assignId @constructor.name
+
+    populate: (obj) ->
+      @attrs = obj
     
     getId: ->
       @attrs.id      

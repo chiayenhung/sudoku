@@ -1,4 +1,4 @@
-define ["base", "grid"], (Base, Grid) ->
+define ["models/base", "models/grid"], (Base, Grid) ->
   class Game extends Base
 
     constructor: (rowNum=9) ->
@@ -8,5 +8,6 @@ define ["base", "grid"], (Base, Grid) ->
 
     populateGrids: (rowNum) ->
       for row in [0..rowNum - 1]
+        @attrs.grids.push []
         for column in [0..rowNum - 1]
           @attrs.grids[row][column] = new Grid
