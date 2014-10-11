@@ -23,7 +23,7 @@ module.exports = (grunt) ->
     copy:
       development:
         files: [
-          { expand: true, cwd: "#{DEV_PATH}/public", src:['**'], dest: "#{PRODUCTION_PATH}/public" }
+          { expand: true, cwd: "#{DEV_PATH}/public", src:['**'], dest: "#{PRODUCTION_PATH}" }
         ]
 
     jade:

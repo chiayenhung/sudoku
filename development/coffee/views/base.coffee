@@ -4,4 +4,4 @@ define [], ->
     constructor: (el=null) ->
       @el = el
 
-    
+    setHandlers: ->

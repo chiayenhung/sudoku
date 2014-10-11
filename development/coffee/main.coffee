@@ -1,4 +1,4 @@
-DIR = "../public/js"
+DIR = "../lib/js"
 
 requirejs.config
   paths:
