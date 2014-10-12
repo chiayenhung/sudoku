@@ -1,0 +1,35 @@
+.container
+  +display-flex
+  justify-content: center
+  padding: 10px
+
+.board
+  +display-flex
+  width: 500px
+  height: 500px
+  flex-direction: column
+
+.row
+  +display-flex
+  flex: 1
+  flex-direction: row
+
+.column
+  +display-flex
+  flex: 1
+  flex-direction: column
+  border: 1px blue solid
+
+.grid
+  width: 33%
+  border: 1px black solid
+  line-height: 50px
+  text-align: center
+  cursor: pointer
+  +user-select(none)
+
+  &.pressed
+    background: gray
+
+  &.immutable
+    font-weight: bold

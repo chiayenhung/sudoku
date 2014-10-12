@@ -10,4 +10,4 @@ define ["models/base"], (Base) ->
       for row in [0..rowNum - 1]
         @attrs.grids.push []
         for column in [0..rowNum - 1]
-          @attrs.grids[row][column] = obj?.grids?[row]?[column] || immutable: false, number: null
+          @attrs.grids[row][column] = immutable: obj?.grids?[row]?[column] > 0, number: obj?.grids?[row]?[column]

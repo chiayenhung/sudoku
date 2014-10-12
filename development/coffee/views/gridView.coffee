@@ -3,16 +3,19 @@ define ["jquery", "views/base"], ($, Base) ->
 
 		model = null
 
-		constructor: (el, coordinate, immutable) ->
-      @counter = 1
+		constructor: (el, coordinate, number) ->
       @coordinate = coordinate
-      @immutable = immutable
+      @immutable = number > 0
+      @number = number
       super
 
     setHandlers: ->
       @el.off(".click").on "click.click", (e) =>
-        console.log @coordinate
-        @el.toggleClass "pressed"
         if not @immutable
-          @el.text @counter
-          @counter++
+          @el.toggleClass "pressed"
+          @trigger "update", @coordinate, @number
+
+    render: ->
+      if @immutable
+        @el.text @number
+      

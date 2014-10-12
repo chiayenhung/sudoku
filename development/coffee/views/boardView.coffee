@@ -5,7 +5,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "models/game"], (
     game = null
 
     constructor: (el, rowNum=9, obj) ->
-      super el
+      super
       game = new Game rowNum, obj
       @gridViews = []
       @generateGrid rowNum, obj
@@ -21,14 +21,24 @@ define ["jquery", "templates", "views/base", "views/gridView", "models/game"], (
             newRow = $(JST['row']())
             column.append newRow
             for y in [0..rowNum / 3 - 1]
-              grid = $(JST['grid']())
+              grid = @setGridView i * rowNum / 3 + x, j * rowNum / 3 + y, obj
               newRow.append grid
-              view = new GridView grid, [i * rowNum / 3 + x, j * rowNum / 3 + y]
-              view.setHandlers()
-              @gridViews.push view
 
     setHandlers: ->
-      @setGridHandlers()
+      @setGridListener()
 
-    setGridHandlers: ->
-      
+    setGridView: (indexX, indexY, obj) ->
+      grid = $(JST['grid']())
+      grid.toggleClass "immutable", obj?.grids[indexX][indexY] > 0
+      view = new GridView grid, [indexX, indexY], obj?.grids[indexX][indexY]
+      view.setHandlers()
+      view.render()
+      @gridViews.push view
+      grid
+
+    setGridListener: ->
+      @gridViews.forEach (item, index) ->
+        item.off("update").on "update", (coordinate, number) ->
+          console.log coordinate, number
+
+
