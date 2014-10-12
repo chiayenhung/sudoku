@@ -15,4 +15,5 @@ requirejs ["jquery" ,"views/boardView"], ($, Board) ->
     dataType: "json"
     success: (data) ->
       board = new Board $(".board"), data?.pattern?[0].length, data?.pattern?[0]
+      board.render()
       board.setHandlers()

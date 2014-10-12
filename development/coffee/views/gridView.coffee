@@ -12,10 +12,25 @@ define ["jquery", "views/base"], ($, Base) ->
     setHandlers: ->
       @el.off(".click").on "click.click", (e) =>
         if not @immutable
-          @el.toggleClass "pressed"
-          @trigger "update", @coordinate, @number
+          if @el.hasClass "pressed"
+            @trigger "closePopup"
+            @close()
+          else 
+            @trigger "openPopup", e
+            @open()
 
     render: ->
-      if @immutable
+      if @number > 0
         @el.text @number
+
+    update: (number) ->
+      @number = number
+      @render()
+      @trigger "update", @coordinate, @number
+
+    open: ->
+      @el.addClass "pressed"
+
+    close: ->
+      @el.removeClass "pressed"
       

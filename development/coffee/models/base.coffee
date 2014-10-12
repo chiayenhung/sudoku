@@ -19,8 +19,18 @@ define [], ->
     populate: (obj) ->
       @attrs = obj
     
-    getId: ->
-      @attrs.id      
+    get: (key) ->
+      if not key of @attrs
+        console.error key, " not in attrs"
+        return null
+      @attrs[key]
+
+    set: (key, value) ->
+      if not key of @attrs
+        console.error key, " not in attrs"
+        return @
+      @attrs[key] = value
+      @  
 
     save: ->
       data = null
@@ -28,7 +38,7 @@ define [], ->
         data = {}
       else
         data = JSON.parse localStorage.getItem(@constructor.name)
-      data[@getId()] = @attrs
+      data[@get("id")] = @attrs
       localStorage.setItem @constructor.name, JSON.stringify data
 
     remove: ->
@@ -36,8 +46,8 @@ define [], ->
         console.error @constructor.name, "is not created"
         return
       data = JSON.parse(localStorage.getItem @constructor.name)
-      if @getId() not of data
-        console.error "id", @getId(), @constructor.name, "not in memory"
-      delete data[@getId()]
+      if @get("id") not of data
+        console.error "id", @get("id"), @constructor.name, "not in memory"
+      delete data[@get("id")]
       localStorage.setItem @constructor.name, JSON.stringify(data)
 
