@@ -13,7 +13,9 @@ requirejs ["jquery" ,"views/boardView"], ($, BoardView) ->
   $.ajax
     url: "data/pattern.json"
     dataType: "json"
+    cache: false
     success: (data) ->
-      board = new BoardView $(".board"), data?.pattern?[0].length, data?.pattern?[0]
+      pick = Math.floor Math.random() * data.pattern.length
+      board = new BoardView $(".board"), data?.pattern?[pick].length, data?.pattern?[pick]
       board.render()
       board.setHandlers()
