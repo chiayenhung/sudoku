@@ -53,7 +53,6 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
           item.off("update").on "update", (coordinate, number) ->
             grids = game.get "grids"
             grids[coordinate[0]][coordinate[1]].number = number
-            @el.removeClass "error"
             copy.closeAllGrid()
             copy.popup.close()
             copy.check coordinate
@@ -96,11 +95,15 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
           if item.number != 0
             if item.number not of map
               map[item.number] = []
-            map[item.number].push [startX + i, startY + j]
+            map[item.number].push item#[startX + i, startY + j]
             if map[item.number].length > 1
-              map[item.number].forEach ([x, y]) =>
-                if not @gridViews[x][y].immutable
-                  @gridViews[x][y].el.addClass "error"
+              map[item.number].forEach (grid) =>
+                if not grid.immutable
+                  grid.addClass "error"
+            else
+              map[item.number].forEach (grid) =>
+                if not grid.immutable
+                  grid.removeClass "error"
 
     checkRow: (coordinate) ->
       startX = coordinate[0]
@@ -110,11 +113,15 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
         if item.number != 0
           if item.number not of map
             map[item.number] = []
-          map[item.number].push [startX, j]
+          map[item.number].push item
           if map[item.number].length > 1
-            map[item.number].forEach ([x, y]) =>
-              if not @gridViews[x][y].immutable
-                @gridViews[x][y].el.addClass "error"
+            map[item.number].forEach (grid) =>
+              if not grid.immutable
+                grid.addClass "error"
+          else
+            map[item.number].forEach (grid) =>
+              if not grid.immutable
+                grid.removeClass "error"
 
     checkColumn: (coordinate) ->
       startY = coordinate[1]
@@ -124,9 +131,13 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
         if item.number != 0
           if item.number not of map
             map[item.number] = []
-          map[item.number].push [i, startY]
+          map[item.number].push item
           if map[item.number].length > 1
-            map[item.number].forEach ([x, y]) =>
-              if not @gridViews[x][y].immutable
-                @gridViews[x][y].el.addClass "error"
+            map[item.number].forEach (grid) =>
+              if not grid.immutable
+                grid.addClass "error"
+          else
+            map[item.number].forEach (grid) =>
+              if not grid.immutable
+                grid.removeClass "error"
 

@@ -35,4 +35,10 @@ define ["jquery", "views/base"], ($, Base) ->
 
     close: ->
       @el.removeClass "pressed"
+
+    addClass: (cls) ->
+      @el.addClass cls
+
+    removeClass: (cls) ->
+      @el.removeClass cls
       
