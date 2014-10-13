@@ -7,12 +7,12 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
     obj = null
 
     constructor: (el, row=9, objs) ->
-      super
       rowNum = row
       obj = objs
       game = new Game rowNum, obj
       @gridViews = []
       @popup = new Popup()
+      super
 
     generateGrid: (rowNum, obj) ->
       for i in [0..rowNum / 3 - 1]
@@ -37,32 +37,64 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       view = new GridView grid, [indexX, indexY], obj?.grids[indexX][indexY]
       view.setHandlers()
       view.render()
-      @gridViews.push view
+      @gridViews[indexX][indexY] = view
       grid
 
     setGridListener: ->
       copy = @
-      @gridViews.forEach (item, index) =>
-        item.off("update").on "update", (coordinate, number) =>
-          grids = game.get "grids"
-          grids[coordinate[0]][coordinate[1]].number = number
-          @closeAllGrid()
-          @popup.close()
+      for i in [0..rowNum - 1]
+        for j in [0..rowNum - 1]
+          item = @gridViews[i][j]
+          item.off("update").on "update", (coordinate, number) =>
+            grids = game.get "grids"
+            grids[coordinate[0]][coordinate[1]].number = number
+            @closeAllGrid()
+            @popup.close()
+            @check coordinate
 
-        item.off("openPopup").on "openPopup", (e) ->
-          copy.closeAllGrid()
-          copy.popup.open e, @
+          item.off("openPopup").on "openPopup", (e) ->
+            copy.closeAllGrid()
+            copy.popup.open e, @
 
-        item.off("closePopup").on "closePopup", (e) ->
-          copy.popup.close()
+          item.off("closePopup").on "closePopup", (e) ->
+            copy.popup.close()
 
     closeAllGrid: ->
-      @gridViews.forEach (item) ->
-        item.close()
+      for i in [0..rowNum - 1]
+        for j in [0..rowNum - 1]
+          item = @gridViews[i][j]        
+          item.close()
+
+    defineGridViews: ->
+      for i in [0..rowNum - 1]
+        @gridViews.push new Array(rowNum)
 
     render: ->
+      @defineGridViews()
       @generateGrid rowNum, obj
       @el.after @popup.render()
       @popup.setHandlers()
+
+    check: (coordinate) ->
+      @checkBlock coordinate
+      # @checkRow coordinate
+      # @checkColumn coordinate
+
+    checkBlock: (coordinate) ->
+      startX = Math.floor(coordinate[0] / 3) * rowNum / 3
+      startY = Math.floor(coordinate[1] / 3) * rowNum / 3
+      map = {}
+      for i in [0..rowNum / 3 - 1]
+        for j in [0..rowNum / 3 - 1]
+          item = @gridViews[startX + i][startY + j]
+          if item.number != 0
+            if item.number not of map
+              map[item.number] = []
+            map[item.number].push [startX + i, startY + j]
+            if map[item.number].length > 1
+              map[item.number].forEach ([x, y]) =>
+                if not @gridViews[x][y].immutable
+                  @gridViews[x][y].el.addClass "error"
+
 
 

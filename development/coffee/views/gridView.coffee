@@ -22,6 +22,8 @@ define ["jquery", "views/base"], ($, Base) ->
     render: ->
       if @number > 0
         @el.text @number
+      else
+        @el.text ""
 
     update: (number) ->
       @number = number
