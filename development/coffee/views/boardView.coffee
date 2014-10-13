@@ -30,6 +30,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
 
     setHandlers: ->
       @setGridListener()
+      @setPopupListener()
 
     setGridView: (indexX, indexY, obj) ->
       grid = $(JST['grid']())
@@ -40,17 +41,22 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       @gridViews[indexX][indexY] = view
       grid
 
+    setPopupListener: ->
+      @popup.on "closePop", =>
+        @closeAllGrid()
+
     setGridListener: ->
       copy = @
       for i in [0..rowNum - 1]
         for j in [0..rowNum - 1]
           item = @gridViews[i][j]
-          item.off("update").on "update", (coordinate, number) =>
+          item.off("update").on "update", (coordinate, number) ->
             grids = game.get "grids"
             grids[coordinate[0]][coordinate[1]].number = number
-            @closeAllGrid()
-            @popup.close()
-            @check coordinate
+            @el.removeClass "error"
+            copy.closeAllGrid()
+            copy.popup.close()
+            copy.check coordinate
 
           item.off("openPopup").on "openPopup", (e) ->
             copy.closeAllGrid()
@@ -77,8 +83,8 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
 
     check: (coordinate) ->
       @checkBlock coordinate
-      # @checkRow coordinate
-      # @checkColumn coordinate
+      @checkRow coordinate
+      @checkColumn coordinate
 
     checkBlock: (coordinate) ->
       startX = Math.floor(coordinate[0] / 3) * rowNum / 3
@@ -96,5 +102,31 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
                 if not @gridViews[x][y].immutable
                   @gridViews[x][y].el.addClass "error"
 
+    checkRow: (coordinate) ->
+      startX = coordinate[0]
+      map = {}
+      for j in [0..rowNum - 1]
+        item = @gridViews[startX][j]
+        if item.number != 0
+          if item.number not of map
+            map[item.number] = []
+          map[item.number].push [startX, j]
+          if map[item.number].length > 1
+            map[item.number].forEach ([x, y]) =>
+              if not @gridViews[x][y].immutable
+                @gridViews[x][y].el.addClass "error"
 
+    checkColumn: (coordinate) ->
+      startY = coordinate[1]
+      map = {}
+      for i in [0..rowNum - 1]
+        item = @gridViews[i][startY]
+        if item.number != 0
+          if item.number not of map
+            map[item.number] = []
+          map[item.number].push [i, startY]
+          if map[item.number].length > 1
+            map[item.number].forEach ([x, y]) =>
+              if not @gridViews[x][y].immutable
+                @gridViews[x][y].el.addClass "error"
 

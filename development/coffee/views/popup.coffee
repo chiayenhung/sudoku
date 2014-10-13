@@ -16,14 +16,22 @@ define ["jquery", "views/base", "templates"], ($, Base, JST) ->
         if grid
           grid.update data.number
 
+      $(document).on "click", (e) =>
+        if $(e.target).closest(".board").length == 0
+          @close()
+          @trigger "closePop"
+
     open: (e, gridView) ->
       grid = gridView
       $grid = $(e.target)
       position = $grid.position()
       width = $grid.width() / 2
       height = $grid.height()
+      positionTop = position.top + height
+      if positionTop + @el.height() > $(window).innerHeight()
+        positionTop = position.top - @el.height()
       @el.css "left", position.left + width
-      @el.css "top", position.top + height
+      @el.css "top", positionTop
       @el.addClass "open"
 
     close: ->
