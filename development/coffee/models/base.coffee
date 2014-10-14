@@ -30,7 +30,17 @@ define [], ->
         console.error key, " not in attrs"
         return @
       @attrs[key] = value
-      @  
+      @ 
+
+    fetch: (id) ->
+      if @constructor.name of localStorage
+        data = JSON.parse localStorage.getItem(@constructor.name)
+        if id of data
+          @attrs = data[id]
+        else
+          console.error id, "not exists"
+      else
+        console.error @constructor.name, "not exists"
 
     save: ->
       data = null

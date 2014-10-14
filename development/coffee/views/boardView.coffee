@@ -2,14 +2,10 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
 
   class BoardView extends Base
 
-    game = null
-    rowNum = null
-    obj = null
-
     constructor: (el, row=9, objs) ->
-      rowNum = row
-      obj = objs
-      game = new Game rowNum, obj
+      @rowNum = row
+      @obj = objs
+      @game = new Game row, objs
       @gridViews = []
       @popup = new Popup()
       super
@@ -48,11 +44,11 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
 
     setGridListener: ->
       copy = @
-      for i in [0..rowNum - 1]
-        for j in [0..rowNum - 1]
+      for i in [0..@rowNum - 1]
+        for j in [0..@rowNum - 1]
           item = @gridViews[i][j]
           item.off("update").on "update", (coordinate, number) ->
-            grids = game.get "grids"
+            grids = copy.game.get "grids"
             grids[coordinate[0]][coordinate[1]].number = number
             copy.closeAllGrid()
             copy.popup.close()
@@ -69,18 +65,19 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       
       
     closeAllGrid: ->
-      for i in [0..rowNum - 1]
-        for j in [0..rowNum - 1]
+      for i in [0..@rowNum - 1]
+        for j in [0..@rowNum - 1]
           item = @gridViews[i][j]        
           item.close()
 
     defineGridViews: ->
-      for i in [0..rowNum - 1]
-        @gridViews.push new Array(rowNum)
+      for i in [0..@rowNum - 1]
+        @gridViews.push new Array(@rowNum)
 
     render: ->
+      @el.empty()
       @defineGridViews()
-      @generateGrid rowNum, obj
+      @generateGrid @rowNum, @obj
       @el.after @popup.render()
       @popup.setHandlers()
 
@@ -90,11 +87,11 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       @checkColumn coordinate
 
     checkBlock: (coordinate) ->
-      startX = Math.floor(coordinate[0] / 3) * rowNum / 3
-      startY = Math.floor(coordinate[1] / 3) * rowNum / 3
+      startX = Math.floor(coordinate[0] / 3) * @rowNum / 3
+      startY = Math.floor(coordinate[1] / 3) * @rowNum / 3
       map = {}
-      for i in [0..rowNum / 3 - 1]
-        for j in [0..rowNum / 3 - 1]
+      for i in [0..@rowNum / 3 - 1]
+        for j in [0..@rowNum / 3 - 1]
           item = @gridViews[startX + i][startY + j]
           if item.number != 0
             if item.number not of map
@@ -112,7 +109,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
     checkRow: (coordinate) ->
       startX = coordinate[0]
       map = {}
-      for j in [0..rowNum - 1]
+      for j in [0..@rowNum - 1]
         item = @gridViews[startX][j]
         if item.number != 0
           if item.number not of map
@@ -130,7 +127,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
     checkColumn: (coordinate) ->
       startY = coordinate[1]
       map = {}
-      for i in [0..rowNum - 1]
+      for i in [0..@rowNum - 1]
         item = @gridViews[i][startY]
         if item.number != 0
           if item.number not of map

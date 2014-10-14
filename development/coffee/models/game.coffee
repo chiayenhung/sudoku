@@ -4,7 +4,8 @@ define ["models/base"], (Base) ->
     constructor: (rowNum=9, obj) ->
       super
       @attrs.grids = []
-      @populateGrids rowNum, obj
+      if obj
+        @populateGrids rowNum, obj
 
     populateGrids: (rowNum, obj) ->
       for row in [0..rowNum - 1]
