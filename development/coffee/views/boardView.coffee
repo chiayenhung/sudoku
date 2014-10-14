@@ -31,6 +31,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
     setHandlers: ->
       @setGridListener()
       @setPopupListener()
+      @setButtonHandlers()
 
     setGridView: (indexX, indexY, obj) ->
       grid = $(JST['grid']())
@@ -64,6 +65,9 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
           item.off("closePopup").on "closePopup", (e) ->
             copy.popup.close()
 
+    setButtonHandlers: ->
+      
+      
     closeAllGrid: ->
       for i in [0..rowNum - 1]
         for j in [0..rowNum - 1]
@@ -99,11 +103,11 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
             if map[item.number].length > 1
               map[item.number].forEach (grid) =>
                 if not grid.immutable
-                  grid.addClass "error"
+                  grid.addClass "error-block"
             else
               map[item.number].forEach (grid) =>
                 if not grid.immutable
-                  grid.removeClass "error"
+                  grid.removeClass "error-block"
 
     checkRow: (coordinate) ->
       startX = coordinate[0]
@@ -117,11 +121,11 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
           if map[item.number].length > 1
             map[item.number].forEach (grid) =>
               if not grid.immutable
-                grid.addClass "error"
+                grid.addClass "error-row"
           else
             map[item.number].forEach (grid) =>
               if not grid.immutable
-                grid.removeClass "error"
+                grid.removeClass "error-row"
 
     checkColumn: (coordinate) ->
       startY = coordinate[1]
@@ -135,9 +139,9 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
           if map[item.number].length > 1
             map[item.number].forEach (grid) =>
               if not grid.immutable
-                grid.addClass "error"
+                grid.addClass "error-column"
           else
             map[item.number].forEach (grid) =>
               if not grid.immutable
-                grid.removeClass "error"
+                grid.removeClass "error-column"
 
