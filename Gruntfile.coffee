@@ -74,12 +74,12 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'clientTemplates', 'Compile and concatenate Jade templates for client.', ->
     templates = 
-      'grid': "#{DEV_PATH}/templates/grid.jade"
+      "lobby": "#{DEV_PATH}/templates/lobby.jade"
+      "grid": "#{DEV_PATH}/templates/grid.jade"
       "row": "#{DEV_PATH}/templates/row.jade"
       "column": "#{DEV_PATH}/templates/column.jade"
       "popup": "#{DEV_PATH}/templates/popup.jade"
 
-    # tmplFileContents = "var JST = (function() {\n"
     tmplFileContents = "define(['jade'], function(jade) {\n"
     tmplFileContents += 'var JST = {};\n'
 

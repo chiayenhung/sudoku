@@ -27,7 +27,6 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
     setHandlers: ->
       @setGridListener()
       @setPopupListener()
-      @setButtonHandlers()
 
     setGridView: (indexX, indexY, obj) ->
       grid = $(JST['grid']())
@@ -61,9 +60,6 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
           item.off("closePopup").on "closePopup", (e) ->
             copy.popup.close()
 
-    setButtonHandlers: ->
-      
-      
     closeAllGrid: ->
       for i in [0..@rowNum - 1]
         for j in [0..@rowNum - 1]
@@ -82,63 +78,3 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       @popup.setHandlers()
 
     check: (coordinate) ->
-      @checkBlock coordinate
-      @checkRow coordinate
-      @checkColumn coordinate
-
-    checkBlock: (coordinate) ->
-      startX = Math.floor(coordinate[0] / 3) * @rowNum / 3
-      startY = Math.floor(coordinate[1] / 3) * @rowNum / 3
-      map = {}
-      for i in [0..@rowNum / 3 - 1]
-        for j in [0..@rowNum / 3 - 1]
-          item = @gridViews[startX + i][startY + j]
-          if item.number != 0
-            if item.number not of map
-              map[item.number] = []
-            map[item.number].push item#[startX + i, startY + j]
-            if map[item.number].length > 1
-              map[item.number].forEach (grid) =>
-                if not grid.immutable
-                  grid.addClass "error-block"
-            else
-              map[item.number].forEach (grid) =>
-                if not grid.immutable
-                  grid.removeClass "error-block"
-
-    checkRow: (coordinate) ->
-      startX = coordinate[0]
-      map = {}
-      for j in [0..@rowNum - 1]
-        item = @gridViews[startX][j]
-        if item.number != 0
-          if item.number not of map
-            map[item.number] = []
-          map[item.number].push item
-          if map[item.number].length > 1
-            map[item.number].forEach (grid) =>
-              if not grid.immutable
-                grid.addClass "error-row"
-          else
-            map[item.number].forEach (grid) =>
-              if not grid.immutable
-                grid.removeClass "error-row"
-
-    checkColumn: (coordinate) ->
-      startY = coordinate[1]
-      map = {}
-      for i in [0..@rowNum - 1]
-        item = @gridViews[i][startY]
-        if item.number != 0
-          if item.number not of map
-            map[item.number] = []
-          map[item.number].push item
-          if map[item.number].length > 1
-            map[item.number].forEach (grid) =>
-              if not grid.immutable
-                grid.addClass "error-column"
-          else
-            map[item.number].forEach (grid) =>
-              if not grid.immutable
-                grid.removeClass "error-column"
-

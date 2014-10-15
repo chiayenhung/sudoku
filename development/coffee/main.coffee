@@ -9,13 +9,6 @@ requirejs.config
     'jquery': exports: '$'
     'jade': exports: 'jade'
 
-requirejs ["jquery" ,"views/boardView"], ($, BoardView) ->
-  $.ajax
-    url: "data/pattern.json"
-    dataType: "json"
-    cache: false
-    success: (data) ->
-      pick = Math.floor Math.random() * data.pattern.length
-      board = new BoardView $(".board"), data?.pattern?[pick].length, data?.pattern?[pick]
-      board.render()
-      board.setHandlers()
+requirejs ["jquery" ,"views/lobbyView"], ($, LobbyView) ->
+  lobby = new LobbyView $(".lobby")
+  lobby.setHandlers()
