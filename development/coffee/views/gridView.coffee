@@ -41,4 +41,7 @@ define ["jquery", "views/base"], ($, Base) ->
 
     removeClass: (cls) ->
       @el.removeClass cls
+
+    isError: ->
+      @el.find(".error-column, .error-row, .error-block").length > 0
       

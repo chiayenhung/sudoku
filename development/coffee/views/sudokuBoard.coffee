@@ -64,3 +64,12 @@ define ["jquery", "views/boardView"], ($, BoardView) ->
             map[item.number].forEach (grid) =>
               if not grid.immutable
                 grid.removeClass "error-column"
+
+    isWin: ->
+      res = true
+      @gridViews.forEach (row, indexX) ->
+        row.forEach (item, indexY) ->
+          if item.number == 0 or item.isError()
+            res = false
+            return false
+      res

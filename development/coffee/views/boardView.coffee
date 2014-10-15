@@ -51,6 +51,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
             copy.closeAllGrid()
             copy.popup.close()
             copy.check coordinate
+            console.log copy.isWin()
 
           item.off("openPopup").on "openPopup", (e) ->
             copy.closeAllGrid()
