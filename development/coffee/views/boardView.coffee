@@ -4,13 +4,12 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
 
     constructor: (el, row=9, objs) ->
       @rowNum = row
-      @obj = objs
       @game = new Game row, objs
       @gridViews = []
       @popup = new Popup()
       super
 
-    generateGrid: (rowNum, obj) ->
+    generateGrid: (rowNum) ->
       for i in [0..rowNum / 3 - 1]
         row = $(JST['row']())
         @el.append row
@@ -21,17 +20,17 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
             newRow = $(JST['row']())
             column.append newRow
             for y in [0..rowNum / 3 - 1]
-              grid = @setGridView i * rowNum / 3 + x, j * rowNum / 3 + y, obj
+              grid = @setGridView i * rowNum / 3 + x, j * rowNum / 3 + y
               newRow.append grid
 
     setHandlers: ->
       @setGridListener()
       @setPopupListener()
 
-    setGridView: (indexX, indexY, obj) ->
+    setGridView: (indexX, indexY) ->
       grid = $(JST['grid']())
-      grid.toggleClass "immutable", obj?.grids[indexX][indexY] > 0
-      view = new GridView grid, [indexX, indexY], obj?.grids[indexX][indexY]
+      grid.toggleClass "immutable", @game.attrs.grids[indexX][indexY].immutable #obj?.grids[indexX][indexY] > 0
+      view = new GridView grid, [indexX, indexY], @game.attrs.grids[indexX][indexY].number#obj?.grids[indexX][indexY]
       view.setHandlers()
       view.render()
       @gridViews[indexX][indexY] = view
@@ -73,7 +72,8 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
     render: ->
       @el.empty()
       @defineGridViews()
-      @generateGrid @rowNum, @obj
+      @generateGrid @rowNum
+      $(".popup").remove()
       @el.after @popup.render()
       @popup.setHandlers()
 

@@ -1,23 +1,24 @@
 define [], ->
   class Base
-    @models = {}
 
-    @assignId: (className) ->
-      id = null
-      if className of @models
-        id = @models[className]
-        @models[className] += 1
-      else
+    @assignId: (className, callback) ->
+      data = JSON.parse localStorage.getItem("autoIncrement")
+      if not data
+        data = {}
+      if className not of data
+        data[className] = 2
         id = 1
-        @models[className] = 2
-      id
+      else
+        id = data[className]
+        data[className]++
+      localStorage.setItem "autoIncrement", JSON.stringify data
+      callback id
 
     constructor: ->
       @attrs = 
-        id: Base.assignId @constructor.name
-
-    populate: (obj) ->
-      @attrs = obj
+        id: null
+        createTime: null
+        updateTime: null
     
     get: (key) ->
       if not key of @attrs
@@ -32,24 +33,41 @@ define [], ->
       @attrs[key] = value
       @ 
 
-    fetch: (id) ->
+    fetch: (id, callback) ->
+      if not callback
+        callback = ->
       if @constructor.name of localStorage
         data = JSON.parse localStorage.getItem(@constructor.name)
         if id of data
           @attrs = data[id]
+          callback()
         else
           console.error id, "not exists"
+          callback(true)
       else
         console.error @constructor.name, "not exists"
+        callback(true)
 
     save: ->
       data = null
+      firstCreate = false
       if @constructor.name not of localStorage
         data = {}
       else
         data = JSON.parse localStorage.getItem(@constructor.name)
-      data[@get("id")] = @attrs
-      localStorage.setItem @constructor.name, JSON.stringify data
+      if not @get "id"
+        firstCreate = true
+        Base.assignId @constructor.name, (id) =>
+          @set "id", id
+          @attrs.createTime = new Date
+          @attrs.updateTime = new Date
+          data[@get("id")] = @attrs
+          localStorage.setItem @constructor.name, JSON.stringify data
+      else
+        data[@get("id")] = @attrs
+        data[@get("id")].updateTime = new Date
+        localStorage.setItem @constructor.name, JSON.stringify data
+
 
     remove: ->
       if @constructor.name not of localStorage
