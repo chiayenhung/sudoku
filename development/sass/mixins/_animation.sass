@@ -1,0 +1,13 @@
+=transition($properties...)
+  $webkit: ()
+  $moz: ()
+  $spec: ()
+
+  @each $list in $properties
+    $webkit:  append($webkit, $list, comma)
+    $moz:     append($moz,    $list, comma)
+    $spec:    append($spec,   $list, comma)
+
+  -webkit-transition: $webkit
+  -moz-transition: $moz
+  transition: $spec

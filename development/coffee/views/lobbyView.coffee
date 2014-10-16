@@ -4,6 +4,7 @@ define ["jquery", "templates", "utils/utils", "views/base", "views/sudokuBoard",
     template: JST["lobby"]
 
     constructor: ->
+      @board = null
       $.ajax
         url: "data/pattern.json"
         dataType: "json"
@@ -12,6 +13,12 @@ define ["jquery", "templates", "utils/utils", "views/base", "views/sudokuBoard",
           @allGames = data
           @render()
           @generateNewGame()
+          @board.on "isWin", (isWin) ->
+            if isWin
+              $(".winPopup").addClass "open"
+              setTimeout ->
+                $(".winPopup").removeClass "open"
+              , 3000
       super
 
     render: ->

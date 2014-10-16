@@ -51,7 +51,7 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
             copy.closeAllGrid()
             copy.popup.close()
             copy.check coordinate
-            console.log copy.isWin()
+            copy.trigger "isWin", copy.isWin()
 
           item.off("openPopup").on "openPopup", (e) ->
             copy.closeAllGrid()
@@ -74,10 +74,10 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       @el.empty()
       @defineGridViews()
       @generateGrid @rowNum
-      $(".popup").remove()
+      $(".inputPop").remove()
       @el.after @popup.render()
       @popup.setHandlers()
 
     check: (coordinate) ->
-      
+
     isWin: ->

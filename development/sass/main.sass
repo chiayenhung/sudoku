@@ -1,11 +1,14 @@
 @import colors
 @import mixins/display
 @import mixins/selection
+@import mixins/animation
 @import modules/base
 @import modules/board
 @import modules/popup
 
-
+body
+  +transition(all .4s)
+  
 .load
   
   .menu
@@ -26,7 +29,8 @@
       .remove
         color: white
         font-size: 15px
-        
+        line-height: 10px
+
         &:hover, &:active
           color: $blue
 
