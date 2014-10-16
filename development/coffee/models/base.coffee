@@ -48,8 +48,10 @@ define [], ->
         console.error @constructor.name, "not exists"
         callback(true)
 
-    save: ->
+    save: (callback) ->
       data = null
+      if not callback
+        callback = ->
       firstCreate = false
       if @constructor.name not of localStorage
         data = {}
@@ -63,19 +65,25 @@ define [], ->
           @attrs.updateTime = new Date
           data[@get("id")] = @attrs
           localStorage.setItem @constructor.name, JSON.stringify data
+          callback()
       else
         data[@get("id")] = @attrs
         data[@get("id")].updateTime = new Date
         localStorage.setItem @constructor.name, JSON.stringify data
+        callback(true)
 
 
-    remove: ->
+    remove: (callback) ->
       if @constructor.name not of localStorage
         console.error @constructor.name, "is not created"
         return
+      if not callback
+        callback = ->
       data = JSON.parse(localStorage.getItem @constructor.name)
       if @get("id") not of data
         console.error "id", @get("id"), @constructor.name, "not in memory"
+        return
       delete data[@get("id")]
       localStorage.setItem @constructor.name, JSON.stringify(data)
+      callback()
 

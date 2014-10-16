@@ -29,8 +29,8 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
 
     setGridView: (indexX, indexY) ->
       grid = $(JST['grid']())
-      grid.toggleClass "immutable", @game.attrs.grids[indexX][indexY].immutable #obj?.grids[indexX][indexY] > 0
-      view = new GridView grid, [indexX, indexY], @game.attrs.grids[indexX][indexY].number#obj?.grids[indexX][indexY]
+      grid.toggleClass "immutable", @game.attrs.grids[indexX][indexY].immutable 
+      view = new GridView grid, [indexX, indexY], @game.attrs.grids[indexX][indexY].number, @game.attrs.grids[indexX][indexY].immutable
       view.setHandlers()
       view.render()
       @gridViews[indexX][indexY] = view
@@ -79,3 +79,5 @@ define ["jquery", "templates", "views/base", "views/gridView", "views/popup", "m
       @popup.setHandlers()
 
     check: (coordinate) ->
+      
+    isWin: ->

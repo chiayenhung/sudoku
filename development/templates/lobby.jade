@@ -1,11 +1,11 @@
+include mixin/listItems
+
 .container
   button.btn.next Next Game
   button.btn.save Save
   button.btn.load.hasMenu Load
     .menu
       ul
-        each item in games
-          li(data-id=item.id)= item.id
-            span= item.updateTime
+        mixin listItems(games, timeFormat)
 .container
   .board

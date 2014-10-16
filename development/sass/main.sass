@@ -1,5 +1,32 @@
+@import colors
 @import mixins/display
 @import mixins/selection
 @import modules/base
 @import modules/board
 @import modules/popup
+
+
+.load
+  
+  .menu
+    top: 120%
+
+    li
+      padding: 10px
+      +display-flex
+      justify-content: space-between
+
+      &:hover, &:active
+        span
+          color: white
+
+      span
+        margin: 0 5px
+
+      .remove
+        color: white
+        font-size: 15px
+        
+        &:hover, &:active
+          color: $blue
+

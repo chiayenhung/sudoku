@@ -3,9 +3,9 @@ define ["jquery", "views/base"], ($, Base) ->
 
 		model = null
 
-		constructor: (el, coordinate, number) ->
+		constructor: (el, coordinate, number, immutable) ->
       @coordinate = coordinate
-      @immutable = number > 0
+      @immutable = immutable
       @number = number
       super
 

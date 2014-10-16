@@ -78,6 +78,7 @@ module.exports = (grunt) ->
       "grid": "#{DEV_PATH}/templates/grid.jade"
       "row": "#{DEV_PATH}/templates/row.jade"
       "column": "#{DEV_PATH}/templates/column.jade"
+      "list": "#{DEV_PATH}/templates/list.jade"
       "popup": "#{DEV_PATH}/templates/popup.jade"
 
     tmplFileContents = "define(['jade'], function(jade) {\n"

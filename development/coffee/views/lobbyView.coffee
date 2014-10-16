@@ -1,4 +1,4 @@
-define ["jquery", "templates", "views/base", "views/sudokuBoard"], ($, JST, Base, SudokuBoard) ->
+define ["jquery", "templates", "utils/utils", "views/base", "views/sudokuBoard", "models/game"], ($, JST,  utils, Base, SudokuBoard, Game) ->
   class LobbyView extends Base
 
     template: JST["lobby"]
@@ -16,16 +16,30 @@ define ["jquery", "templates", "views/base", "views/sudokuBoard"], ($, JST, Base
 
     render: ->
       savedGames = @getSaveGame()
-      @el.html @template games: savedGames
+      @el.html @template 
+        games: savedGames
+        timeFormat: utils.timeFormat
+
+    renderList: ->
+      $ul = @el.find("ul")
+      $ul.html JST["list"]
+        games: @getSaveGame()
+        timeFormat: utils.timeFormat
 
     setHandlers: ->
       copy = @
       @el.on "click", ".save", ->
         if copy.board
-          copy.board.game.save()
+          copy.board.game.save (err) ->
+            if not err
+              copy.renderList()
 
       @el.on "click", ".hasMenu", ->
         $(@).toggleClass "pressed"
+
+      $(document).on "click", (e) ->
+        if $(e.target).closest(".hasMenu").length == 0
+          $(".hasMenu").removeClass "pressed"
 
       @el.on "click", ".next", =>
         @generateNewGame()
@@ -37,6 +51,20 @@ define ["jquery", "templates", "views/base", "views/sudokuBoard"], ($, JST, Base
           if not err
             copy.board.render()
             copy.board.setHandlers()
+
+      @el.on "click", ".remove", (e) ->
+        e.stopPropagation()
+        id = $(@).closest("li").data "id"
+        copy.removeGame id
+
+    removeGame: (id) ->
+      copy = @
+      if not id
+        return
+      game = new Game 
+      game.fetch id, ->
+        game.remove ->
+          copy.renderList()
 
     generateNewGame: ->
       pick = generateRandom @allGames.pattern.length

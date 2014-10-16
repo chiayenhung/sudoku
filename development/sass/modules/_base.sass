@@ -9,14 +9,28 @@ ul
 li
   list-style: none
 
+.btn
+  background: white
+  border-radius: 5px
+  padding: 10px 15px
+  outline: none
+
+  &:active
+    background: $darkGrey
+
 .hasMenu
   position: relative
 
   .menu
     position: absolute
     display: none
+    top: 100%
+    min-width: 150px
+    background: $medGrey
+    border-radius: 5px
 
   &.pressed
+    background: $darkGrey
 
     .menu
       display: block

@@ -1,0 +1,6 @@
+mixin listItems(games, timeFormat)
+  each item in games
+    li(data-id=item.id)
+      span= item.id
+      span= timeFormat(item.val.updateTime)
+      a.remove x
