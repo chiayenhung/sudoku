@@ -6,6 +6,14 @@ Sudoku (Digit-single), originally called Number Place, is a logic-based, combina
 Outline 
 ----
 This is a backbone-like application but all are build from scratch.
+Host on github [sudoku.github]
+
+ - Next Game button will create a new game.
+ - Save button will save the current game to localStorage
+ - Load button will show a menu with saved games, initial with zero game.
+
+in gh-pages branch is just for display.
+the original one is in master.
 
 Tools
 ----
@@ -28,6 +36,12 @@ Javascript Architecture
             - popupView
             - boardView
                 - sudokuBoard 
+
+LocalStorage
+----
+ - autoIncrement: like MySQL autoIncrement id setting, this field store a hashTable with Key: Model name, Value: id to use. Every save new instance will increment the id to use.
+ - Model: maintain a hashTable with model attributes. Key is id, Value is attributes.
+ - Use JSON.parse and JSON.stringify to read and write data to localStorage
   
 Tradeoff
 ----
@@ -59,5 +73,5 @@ grunt
 ```
 
 [wiki]: http://en.wikipedia.org/wiki/Sudoku
-
+[sudoku.github]: http://chiayenhung.github.io/sudoku/
 
