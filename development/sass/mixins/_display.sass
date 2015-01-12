@@ -1,6 +1,22 @@
 =display-flex
-  display: -webkit-box
+  display: -webkit-flex
+  display: -webkit-box-flex
   display: -moz-box
   display: -ms-flexbox
-  display: -webkit-flex
   display: flex
+
+=flex
+  -webkit-flex: 1
+  -webkit-box-flex: 1
+  -moz-flex: 1
+  -moz-box-flex: 1
+  -ms-flex: 1
+  flex: 1
+
+=flex-direction($el)
+  -webkit-flex-direction: $el
+  flex-direction: $el
+
+=justify-content($proper)
+  -webkit-justify-content: $proper
+  justify-content: $proper

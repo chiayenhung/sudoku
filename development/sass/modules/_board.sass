@@ -1,23 +1,23 @@
 .container
   +display-flex
-  justify-content: center
+  +justify-content(center)
   padding: 10px
 
 .board
   +display-flex
   width: 500px
   height: 500px
-  flex-direction: column
+  +flex-direction(column)
 
 .row
   +display-flex
-  flex: 1
-  flex-direction: row
+  +flex
 
 .column
   +display-flex
-  flex: 1
-  flex-direction: column
+  +flex
+  +flex-direction(column)
+
   border: 1px blue solid
 
 .grid
@@ -37,4 +37,3 @@
   &.immutable
     font-weight: bold
     color: black
-  

@@ -36,7 +36,5 @@ define ["jquery", "views/base", "templates"], ($, Base, JST) ->
 
     close: ->
       @el.removeClass "open"
-      setTimeout =>
-        @el.css "left", $(window).innerWidth()
-        @el.css "top", $(window).innerHeight()
-      , 500
+      @el.css "left", "50%"
+      @el.css "top", "50%"

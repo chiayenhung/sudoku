@@ -4,12 +4,20 @@
   background: red
   padding: 5px
   border-radius: 5px
-  +transition(opacity .4s, top .5s, left .5s)
-  // +transition(top, .5s)
-  // +transition(left, .5s)
+  width: 5px
+  height: 5px
+  +transition(opacity .4s, width .5s, height .5s)
 
+  .popupHeader, .popupContent 
+    display: none
+  
   &.open
     opacity: 1
+    width: auto
+    height: auto
+
+    .popupHeader, .popupContent
+      display: block
 
   &.winPopup
     width: 100px
