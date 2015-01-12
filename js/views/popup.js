@@ -55,12 +55,9 @@
       };
 
       Popup.prototype.close = function() {
-        var _this = this;
         this.el.removeClass("open");
-        return setTimeout(function() {
-          _this.el.css("left", $(window).innerWidth());
-          return _this.el.css("top", $(window).innerHeight());
-        }, 500);
+        this.el.css("left", "50%");
+        return this.el.css("top", "50%");
       };
 
       return Popup;
