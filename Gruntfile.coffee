@@ -15,21 +15,28 @@ module.exports = (grunt) ->
   DEV_PATH = "development"
   PRODUCTION_PATH = "production"
 
-
   grunt.initConfig
     clean:
       development: "#{PRODUCTION_PATH}/*"
+      production: ["css/*", "data/*", "js/*", "index.html"]
 
     copy:
       development:
         files: [
           { expand: true, cwd: "#{DEV_PATH}/public", src:['**'], dest: "#{PRODUCTION_PATH}" }
         ]
+      production:
+        files: [
+          { expand: true, cwd: "#{PRODUCTION_PATH}/css", src:['**'], dest: "css/" },
+          { expand: true, cwd: "#{PRODUCTION_PATH}/js", src:['**'], dest: "js/" }
+          { expand: true, cwd: "#{PRODUCTION_PATH}/data", src:['**'], dest: "data/" }
+          { expand: true, cwd: "#{PRODUCTION_PATH}", src:['index.html'], dest: "#{PRODUCTION_PATH}/../" }
+        ]
 
     jade:
       development:
         options:
-          pretty: false
+          pretty: true
 
         files: [
           {
@@ -107,4 +114,10 @@ module.exports = (grunt) ->
   grunt.registerTask 'default', [
     'development'
     'watch'
+  ]
+
+  grunt.registerTask 'production', [
+    'development'
+    'clean:production'
+    'copy:production'
   ]
