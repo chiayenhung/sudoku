@@ -18,7 +18,7 @@ module.exports = (grunt) ->
   grunt.initConfig
     clean:
       development: "#{PRODUCTION_PATH}/*"
-      production: ["css/*", "data/*", "js/*", "index.html"]
+      production: ["css/*", "data/*", "lib/**", "js/*", "index.html"]
 
     copy:
       development:
@@ -30,6 +30,7 @@ module.exports = (grunt) ->
           { expand: true, cwd: "#{PRODUCTION_PATH}/css", src:['**'], dest: "css/" },
           { expand: true, cwd: "#{PRODUCTION_PATH}/js", src:['**'], dest: "js/" }
           { expand: true, cwd: "#{PRODUCTION_PATH}/data", src:['**'], dest: "data/" }
+          { expand: true, cwd: "#{PRODUCTION_PATH}/lib", src:['**'], dest: "lib/" }
           { expand: true, cwd: "#{PRODUCTION_PATH}", src:['index.html'], dest: "#{PRODUCTION_PATH}/../" }
         ]
 
